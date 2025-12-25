@@ -22,13 +22,15 @@ import frc.robot.Commands.Turret.ConstantRateRotateCommand;
 import frc.robot.Commands.Turret.ManualTurretControlCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.GyroReset;  // Keep only this one
+import frc.robot.subsystems.AutoAlignSubSystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-<<<<<<< HEAD
-=======
+
 import frc.robot.subsystems.RobotArm;
 
->>>>>>> 32f81d158a30414f3478627aa2d82284bebf41a1
+
 public class RobotContainer {
+
+    ;
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(3.).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -45,6 +47,7 @@ public class RobotContainer {
     private final CommandXboxController m_DriverController = new CommandXboxController(0); // made up ports
     private final CommandXboxController m_OperatorController = new CommandXboxController(1);
     public final CommandSwerveDrivetrain m_Drivetrain = TunerConstants.createDrivetrain();
+    private final AutoAlignSubSystem autoAlign = new AutoAlignSubSystem(m_Drivetrain);
     public final RobotArm m_turret = new RobotArm();
 
     public RobotContainer() {
@@ -77,6 +80,9 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-m_DriverController.getLeftY(), m_DriverController.getLeftX()))
         ));
 
+        m_DriverController.rightBumper().whileTrue(autoAlign.alignToTarget(4,5.0,0.0,5.0));
+
+
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         m_DriverController.start().and(m_DriverController.x()).whileTrue(m_Drivetrain.sysIdTranslationQuasistatic(Direction.kForward));
@@ -90,11 +96,9 @@ public class RobotContainer {
         m_DriverController.back().and(m_DriverController.b()).whileTrue(m_Drivetrain.sysIdRotationQuasistatic(Direction.kForward));
         m_DriverController.back().and(m_DriverController.a()).whileTrue(m_Drivetrain.sysIdRotationQuasistatic(Direction.kReverse));
 
-<<<<<<< HEAD
-        joystick.rightBumper().onTrue(new GyroReset(drivetrain));
+        m_DriverController.rightBumper().onTrue(new GyroReset(m_Drivetrain));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
-=======
+        m_Drivetrain.registerTelemetry(logger::telemeterize);
         m_DriverController.leftBumper().and(m_DriverController.x()).whileTrue(m_Drivetrain.sysIdSteerQuasistatic(Direction.kForward));
         m_DriverController.leftBumper().and(m_DriverController.y()).whileTrue(m_Drivetrain.sysIdSteerDynamic(Direction.kReverse));
         m_DriverController.leftBumper().and(m_DriverController.b()).whileTrue(m_Drivetrain.sysIdSteerQuasistatic(Direction.kForward));
@@ -103,7 +107,7 @@ public class RobotContainer {
         m_DriverController.leftStick().onTrue(m_Drivetrain.runOnce(() -> m_Drivetrain.seedFieldCentric()));
 
         m_Drivetrain.registerTelemetry(logger::telemeterize); // calls evrey time it regesters it telemetry
->>>>>>> 32f81d158a30414f3478627aa2d82284bebf41a1
+
     }
     
     

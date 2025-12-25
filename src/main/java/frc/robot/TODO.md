@@ -1,0 +1,5 @@
+-Make Auto Align[x]
+-Change to MegaTag2[]
+    -Beinfits of MegaTag2:
+        -Much more accurate bot position estimation
+        -Better Alignment
