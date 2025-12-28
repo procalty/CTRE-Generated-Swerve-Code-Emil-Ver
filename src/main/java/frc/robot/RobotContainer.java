@@ -12,6 +12,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -80,7 +81,7 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-m_DriverController.getLeftY(), m_DriverController.getLeftX()))
         ));
 
-        m_DriverController.rightBumper().whileTrue(autoAlign.alignToTarget(4,5.0,0.0,5.0));
+        m_DriverController.rightBumper().whileTrue(autoAlign.aligntotargetMT2(7, new Pose2d(1.5, 5.5, Rotation2d.fromDegrees(0))));
 
 
         // Run SysId routines when holding back/start and X/Y.
